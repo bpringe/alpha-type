@@ -1,0 +1,28 @@
+html, body {
+	margin: 0px;
+	font-family: Verdana;
+}
+
+#canvas {
+	border: 1px solid black;
+	position: absolute;
+	top: 50px;
+	left: 50px;
+}
+
+#coordinatesDiv {
+	position: absolute;
+	top: 0px;
+}
+
+#coordinates {
+	display: inline-block;
+	vertical-align: middle;
+	border: 0px solid white;
+}
+
+#time {
+	position:absolute;
+	left: 150px;
+}
+
