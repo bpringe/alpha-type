@@ -3,6 +3,7 @@ var CANVAS_HEIGHT = 400;
 var updates = 0;
 var divArray = [];
 
+// Javascript "OOP" implementation
 var DivBlock = function() {
 	this.width = 30;
 	this.height = 35;
