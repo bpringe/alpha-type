@@ -8,31 +8,14 @@ html, body {
 	position: absolute;
 }
 
-#updates {
-	left: 300px;
-}
-
-#numDivs {
-	left: 500px;
-}
-
-#score {
-	left: 800px;
-}
-
 #gameOverProgDiv {
 	position: absolute;
 	height: 15px;
 	border: 1px solid #757575;
-	/* below 3 properties should be set with JS relative to canvas 
-	top: 270px;
-	left: 50px;
-	width: 850px; */
 }
 
 #gameOverProg {
 	background-color: #AD4040;
-	/* below 2 properties will be set with JS */
 	width: 50%;
 	height: 100%;
 }
@@ -47,7 +30,6 @@ html, body {
 	color: #FF3333;
 	text-shadow: 3px 3px #5C5C5C;
 }
-
 
 .stats {
 	position:absolute;
