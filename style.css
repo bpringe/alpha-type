@@ -7,7 +7,6 @@ body {
 #canvas {
 	border: 2px solid #757575;
 	position: absolute;
-	background-color: white;
 	border-radius: 10px;
 }
 
@@ -33,7 +32,7 @@ body {
 	font-size: 60px;
 	font-weight: bold;
 	color: #FF0000;
-	text-shadow: 3px 3px #757575;
+	text-shadow: 0 0 20px #FF0000;
 }
 
 #titleHeader {

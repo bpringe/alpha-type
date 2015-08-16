@@ -75,6 +75,8 @@ function updateGame() {
 	for (i = 0; i < divArray.length; i++) {
 		divArray[i].topOffset += divArray[i].speed;
 		if ((divArray[i].topOffset + (divArray[i].height - 2)) > CANVAS_HEIGHT) {
+			//$("#canvas").css({"background-color": "black"}).animate({"background-color": "white"});
+			
 			/* When array element is deleted the next element is skipped when updating since
 				indexes change. The below forces the update of the next element before deleting
 				the current element.
@@ -100,7 +102,7 @@ function initGame() {
 	
 	// Initialize canvas
 	$("#canvas").css({"width": CANVAS_WIDTH + "px", "height": CANVAS_HEIGHT + "px",
-		"top": CANVAS_TOP_OFFSET + "px", "left": CANVAS_LEFT_OFFSET});
+		"top": CANVAS_TOP_OFFSET + "px", "left": CANVAS_LEFT_OFFSET, "background-color": "white"});
 	
 	// Initialize game over progress bar
 	$("#gameOverProgDiv").css({"top": CANVAS_TOP_OFFSET + CANVAS_HEIGHT + 20 + "px", 
