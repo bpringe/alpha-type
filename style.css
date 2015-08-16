@@ -1,22 +1,27 @@
-html, body {
+body {
 	margin: 0px;
 	font-family: Verdana;
+	background-color: #D9D9D9;
 }
 
 #canvas {
 	border: 2px solid #757575;
 	position: absolute;
+	background-color: white;
+	border-radius: 10px;
 }
 
 #gameOverProgDiv {
 	position: absolute;
 	height: 15px;
-	border: 1px solid #757575;
+	border: 2px solid #757575;
+	background-color: white;
+	border-radius: 10px;
 }
 
 #gameOverProg {
-	background-color: #AD4040;
-	width: 50%;
+	background-color: #3272BA;
+	width: 0%;
 	height: 100%;
 }
 
@@ -27,15 +32,17 @@ html, body {
   transform: translate(-50%, -50%);
 	font-size: 60px;
 	font-weight: bold;
-	color: #FF3333;
-	text-shadow: 3px 3px #5C5C5C;
+	color: #FF0000;
+	text-shadow: 3px 3px #757575;
 }
 
 .stats {
 	position:absolute;
-	border-left: 5px solid #0F73FF;
-	border-bottom: 2px solid #0F73FF;
-	padding: 5px;
+	padding: 10px;
+	background-color: #3272BA;
+	color: white;
+	border-radius: 10px;
+	margin-top: 5px;
 }
 
 .divBlock {
@@ -43,7 +50,7 @@ html, body {
 	width: 30px;
 	height: 35px;
 	border-radius: 10px;
-	background-color: #AD4040;
+	background-color: #3272BA;
 	color: white;
 }
 

@@ -11,6 +11,7 @@ var gameOverProg = 0;
 var gameOverIncrement = 10; // percent toward game over when div hits bottom
 var updateInterval;
 var drawScreenInterval;
+var gameRunning = false;
 
 // Javascript "OOP" implementationzz
 var Div = function() {
@@ -53,9 +54,13 @@ function drawScreen() {
 }
 
 function gameOver() {
+	gameRunning = false;
 	clearInterval(updateInterval);
 	clearInterval(drawScreenInterval);
-	$("#canvas").append("<div id='gameOverMessage'>Game Over</div>");
+	$("#canvas").append("<div id='gameOverMessage' style='display: none'>Game Over</div>");
+	$("#canvas").animate({backgroundColor: "black"}, 1000);
+	$("#gameOverMessage").delay(1000).fadeIn(2000);
+	$("#startMessage").delay(3000).fadeIn(2000);
 }
 
 function updateGame() {
@@ -87,12 +92,6 @@ function updateGame() {
 	}
 }
 
-function clearScreen() {
-	divArray = []; // clears the divs on the canvas
-	gameOverProg = 0; // clears the game over progress bar
-	score = 0;
-}
-
 function initGame() {
 	// Initialize canvas
 	$("#canvas").css({"width": CANVAS_WIDTH + "px", "height": CANVAS_HEIGHT + "px",
@@ -104,6 +103,27 @@ function initGame() {
 	
 	// Initialize score
 	$("#score").css({"left": CANVAS_LEFT_OFFSET + "px"});
+	
+	// Show start message
+	$("#startMessage").css({"left": CANVAS_LEFT_OFFSET + $("#score").width() + 50 + "px",
+		"background-color": "#32BA36"});
+}
+
+function startGame() {
+	gameRunning = true;
+	
+	$("#startMessage").fadeOut();
+	
+	// initialize variables
+	divSpawnRate = 60; // number of updates between spawns
+  score = 0;
+	gameOverProg = 0;
+	updates = 0;
+	divArray = [];
+	$("#canvas").css({"background-color": "white"});
+	
+	// Add first div
+	divArray.push(new Div());
 	
 	// start intervals for calling update and draw functions
 	updateInterval = setInterval(updateGame, (1000/60));  // (1000/60 = 60fps)
@@ -121,14 +141,16 @@ $(document).ready(function() {
 			case 17: // Ctrl
 					divArray.push(new Div());
 					break;
-			case 16: // Shift
-					clearScreen();
-					break;
 		}
 	});
 	
 	// Get keyup events and delete corresponding div in array if it exists
 	$(document).keyup(function(event) {
+		if (event.keyCode === 16) {
+			if (!gameRunning) {
+				startGame();
+			}
+		}
 		//console.log("Handler for .keyup() called. " + event.keyCode); // test
 		for (i = 0; i < divArray.length; i++) {
 			if (event.keyCode === divArray[i].content.charCodeAt(0)) {
