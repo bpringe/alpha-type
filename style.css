@@ -36,6 +36,13 @@ body {
 	text-shadow: 3px 3px #757575;
 }
 
+#titleHeader {
+	position: absolute;
+	font-size: 40px;
+	font-weight: bold;
+	top: 20px;
+}
+
 .stats {
 	position:absolute;
 	padding: 10px;

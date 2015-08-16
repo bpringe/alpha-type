@@ -1,6 +1,6 @@
 var CANVAS_WIDTH = 850;
 var CANVAS_HEIGHT = 400;
-var CANVAS_TOP_OFFSET = 50;
+var CANVAS_TOP_OFFSET = 150;
 var CANVAS_LEFT_OFFSET = 50;
 var updates = 0;
 var divArray = [];
@@ -60,7 +60,7 @@ function gameOver() {
 	$("#canvas").append("<div id='gameOverMessage' style='display: none'>Game Over</div>");
 	$("#canvas").animate({backgroundColor: "black"}, 1000);
 	$("#gameOverMessage").delay(1000).fadeIn(2000);
-	$("#startMessage").delay(3000).fadeIn(2000);
+	$("#startMessage").delay(2000).fadeIn(2000);
 }
 
 function updateGame() {
@@ -93,6 +93,11 @@ function updateGame() {
 }
 
 function initGame() {
+	// Show title header
+	$("#titleHeader").css({"left": CANVAS_LEFT_OFFSET + (CANVAS_WIDTH / 2)
+		- ($("#titleHeader").width() / 2) + "px",});
+	console.log($("#titleHeader").width());
+	
 	// Initialize canvas
 	$("#canvas").css({"width": CANVAS_WIDTH + "px", "height": CANVAS_HEIGHT + "px",
 		"top": CANVAS_TOP_OFFSET + "px", "left": CANVAS_LEFT_OFFSET});
@@ -102,10 +107,12 @@ function initGame() {
 		"left": CANVAS_LEFT_OFFSET + "px", "width": CANVAS_WIDTH + "px"});
 	
 	// Initialize score
-	$("#score").css({"left": CANVAS_LEFT_OFFSET + "px"});
+	$("#score").css({"left": CANVAS_LEFT_OFFSET + "px", "top": 
+		CANVAS_TOP_OFFSET - $("#score").height() - 40 + "px"});
 	
 	// Show start message
 	$("#startMessage").css({"left": CANVAS_LEFT_OFFSET + $("#score").width() + 50 + "px",
+		"top": CANVAS_TOP_OFFSET - $("#score").height() - 40 + "px", 
 		"background-color": "#32BA36"});
 }
 
