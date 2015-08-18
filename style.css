@@ -20,6 +20,7 @@ body {
 
 #gameOverProg {
 	background-color: #3272BA;
+	border-radius: 10px;
 	width: 0%;
 	height: 100%;
 }
@@ -40,6 +41,14 @@ body {
 	font-size: 40px;
 	font-weight: bold;
 	top: 20px;
+}
+
+#highScoresDiv {
+	position: absolute;
+	width: 250px;
+	border: 1px solid black;
+	width: 250px;
+	border-radius: 10px;
 }
 
 .stats {
@@ -68,6 +77,27 @@ body {
 	border: 0px solid white;
 	margin-left: -1px;
 	margin-top: -1px;
+}
+
+.score {
+	float: right;
+	margin-right: 10px;
+}
+
+.center {
+	text-align: center;
+}
+
+hr {
+	width: 75%;
+	border: 0;
+  height: 1px;
+  background: #333;
+  background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+li {
+	margin-top: 10px;
 }
 
 

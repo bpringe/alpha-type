@@ -61,6 +61,13 @@ function gameOver() {
 	$("#canvas").animate({backgroundColor: "black"}, 1000);
 	$("#gameOverMessage").delay(1000).fadeIn(2000);
 	$("#startMessage").delay(2000).fadeIn(2000);
+	
+	/* Call handler to get current high scores and check if current score
+		is greater than any score in the result. If so, post score to handler and
+		use result from post to populate High Scores list.
+			-- Add delay to allow Game Over animation to complete before modal appears 
+	*/
+	$("#highScoreModal").modal("show");
 }
 
 function updateGame() {
@@ -98,7 +105,6 @@ function initGame() {
 	// Show title header
 	$("#titleHeader").css({"left": CANVAS_LEFT_OFFSET + (CANVAS_WIDTH / 2)
 		- ($("#titleHeader").width() / 2) + "px",});
-	console.log($("#titleHeader").width());
 	
 	// Initialize canvas
 	$("#canvas").css({"width": CANVAS_WIDTH + "px", "height": CANVAS_HEIGHT + "px",
@@ -116,6 +122,9 @@ function initGame() {
 	$("#startMessage").css({"left": CANVAS_LEFT_OFFSET + $("#score").width() + 50 + "px",
 		"top": CANVAS_TOP_OFFSET - $("#score").height() - 40 + "px", 
 		"background-color": "#32BA36"});
+		
+	// Draw high scores
+	$("#highScoresDiv").css({"top": CANVAS_TOP_OFFSET + "px","left": CANVAS_LEFT_OFFSET + CANVAS_WIDTH + 20 + "px"});
 }
 
 function startGame() {
@@ -173,5 +182,13 @@ $(document).ready(function() {
 				break;  
 			}
 		}
+	});
+	
+	// Get high scores from scoreHandler.php as JSON
+	$.get("scoreHandler.php", function(jsonData) {
+		$.each(jsonData, function(index, highScore) {
+			$("#highScores").append("<li>" + highScore.name + "<span class='score'>" + 
+				highScore.score + "</span></li>");
+		});
 	});
 });
