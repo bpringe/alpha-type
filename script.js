@@ -44,7 +44,7 @@ function drawDivArray() {
 }
 
 function drawStats() {
-	$("#score").text("Score: " + score);
+	$("#scoreNum").text(score);
 }
 
 function drawScreen() {
@@ -57,6 +57,8 @@ function gameOver() {
 	gameRunning = false;
 	clearInterval(updateInterval);
 	clearInterval(drawScreenInterval);
+	// Clear the array so that keyup events don't increment the score
+	divArray = [];
 	$("#canvas").append("<div id='gameOverMessage' style='display: none'>Game Over</div>");
 	$("#canvas").animate({backgroundColor: "black"}, 1000);
 	$("#gameOverMessage").delay(1000).fadeIn(2000);
@@ -67,7 +69,11 @@ function gameOver() {
 		use result from post to populate High Scores list.
 			-- Add delay to allow Game Over animation to complete before modal appears 
 	*/
-	$("#highScoreModal").modal("show");
+	$.post("scoreHandler.php", {score: score}, function(isHighScore, status){
+		if (isHighScore === "true") {
+			$("#highScoreModal").modal("show");
+		}
+  });
 }
 
 function updateGame() {
@@ -81,9 +87,7 @@ function updateGame() {
 	// Update divs
 	for (i = 0; i < divArray.length; i++) {
 		divArray[i].topOffset += divArray[i].speed;
-		if ((divArray[i].topOffset + (divArray[i].height - 2)) > CANVAS_HEIGHT) {
-			//$("#canvas").css({"background-color": "black"}).animate({"background-color": "white"});
-			
+		if ((divArray[i].topOffset + (divArray[i].height + 2)) > CANVAS_HEIGHT) {
 			/* When array element is deleted the next element is skipped when updating since
 				indexes change. The below forces the update of the next element before deleting
 				the current element.
@@ -96,8 +100,7 @@ function updateGame() {
 	
 	// Spawn new divs
 	if ((updates % divSpawnRate) === 0) {
-		var div = new Div();
-		divArray.push(div);
+		divArray.push(new Div());
 	}
 }
 
@@ -134,7 +137,7 @@ function startGame() {
 	
 	// initialize variables
 	divSpawnRate = 60; // number of updates between spawns
-  score = 0;
+	score = 0;
 	gameOverProg = 0;
 	updates = 0;
 	divArray = [];
@@ -152,9 +155,13 @@ function startGame() {
 $(document).ready(function() {
 	initGame();
 	
+	// Start game when start message is clicked
+	$("#startMessage").click(function() {
+		startGame();
+	});
+	
 	// Test controls
 	$(document).keydown(function(event) {
-		//console.log("Handler for .keydown() called. " + event.keyCode); // test
 		switch (event.keyCode) {
 			case 17: // Ctrl
 					divArray.push(new Div());
@@ -164,18 +171,13 @@ $(document).ready(function() {
 	
 	// Get keyup events and delete corresponding div in array if it exists
 	$(document).keyup(function(event) {
-		if (event.keyCode === 16) {
-			if (!gameRunning) {
-				startGame();
-			}
-		}
 		//console.log("Handler for .keyup() called. " + event.keyCode); // test
 		for (i = 0; i < divArray.length; i++) {
 			if (event.keyCode === divArray[i].content.charCodeAt(0)) {
 				divArray.splice(i, 1);
 				score++;
 				if (score % 10 === 0) {
-					divSpawnRate -= 2; // number of updates between spawns
+					divSpawnRate -= 2; // decrease number of updates between spawns
 				}
 				/* break to prevent deletion of more than one element of array
 				   in case of multiple same characters on canvas at once */
@@ -191,4 +193,23 @@ $(document).ready(function() {
 				highScore.score + "</span></li>");
 		});
 	});
+	
+	/* Post player name and score to db when player clicks save button in modal,
+	  which is only made visible when game is over and score is in the top ten */
+	$("#saveButton").click(function() {
+    $("#highScoreModal").modal("hide");
+		$.post("scoreHandler.php", {score: score, playerName: $("#playerName").val()}, 
+			function(response) {
+				console.log(response);
+			}); // end $.post
+    
+		// Draw the high scores table again
+    $("#highScores").empty();
+	  $.get("scoreHandler.php", function(jsonData) {
+		  $.each(jsonData, function(index, highScore) {
+				$("#highScores").append("<li>" + highScore.name + "<span class='score'>" + 
+					highScore.score + "</span></li>");
+			}); // end $.each
+		}); // end $.get
+	}); // end $("#saveButton").click
 });
