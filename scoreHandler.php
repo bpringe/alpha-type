@@ -1,15 +1,8 @@
 <?php
-/*
-$hostname = "localhost";
-$username = "root";
-$password = "c4ntst0p";
-$dbname = "alphatype";
-*/
-
-$hostname = "sql312.byethost32.com";
-$username = "b32_16555827";
-$password = "c4ntst0p";
-$dbname = "b32_16555827_alphatype";
+$hostname = "fdb6.awardspace.net";
+$username = "1936059_at";
+$password = "H@zelAlvis2";
+$dbname = "1936059_at";
 // Create connection
 $conn = new mysqli($hostname, $username, $password, $dbname);
 // Check connection
@@ -54,7 +47,7 @@ if ((isset($_POST["score"])) and !(isset($_POST["playerName"]))) {
 // To-do: Add security here to protect against SQL injects
 if ((isset($_POST["score"])) and (isset($_POST["playerName"]))) {
   // Find lowest score and delete record in db
-  $min = 6000;
+  $min = 999999999;
   foreach ($rows as $score) {
     if ($score["score"] < $min) {
       $min = $score["score"];
@@ -70,8 +63,17 @@ if ((isset($_POST["score"])) and (isset($_POST["playerName"]))) {
 		"'," . $_POST["score"] . ")";
 	if ($conn->query($sql) === true) {
 		echo $sql . "\nNew record created successfully";
+    $to = "brandon.ringe@gmail.com";
+    $subject = "Alpha Type new high score";
+    $body = "Name: " . $_POST["playerName"] . "\nScore: " . $_POST["score"];
+    $headers = "MIME-Version: 1.0";
+    $headers.= "Content-type:text/html;charset=UTF-8";
+    $headers.= "From: Brandon <admin@alphatype.dx.am>";
+    
+    if(mail($to,$subject,$body,$headers)) echo "MAIL - OK";
+    else echo "\nMAIL FAILED";
 	} else {
-		echo "Error: " . $sql . "\n" . $conn->error;
+		echo "\nError: " . $sql . "\n" . $conn->error;
   }
 	$conn->close();
 	exit();
