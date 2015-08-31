@@ -6,7 +6,9 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<span id="titleHeader">Alpha Type</span>
+	<span id="titleHeader">
+    // <img src="title_resized_80.png" alt="Alpha Type"> //
+  </span>
 	<span id="score" class="stats">Score: <span id="scoreNum">0</span></span>
 	<span id="startMessage" class="stats">Click here to start game.</span>
 	<div id="canvas">
@@ -23,11 +25,12 @@
 			<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">New High Score!</h4>
+						<h4 class="modal-title">New high score!</h4>
 					</div>
 					<div class="modal-body">
 						<input type="text" id="playerName" name="playerName" 
-							class="form-control" placeholder="Enter your name here.">
+							class="form-control" placeholder="Enter your name here."
+              maxlength=20>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -40,6 +43,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="script.min.js" type="text/javascript"></script>
+	<script src="script.js" type="text/javascript"></script>
 </body>
 </html>

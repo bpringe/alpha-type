@@ -48,6 +48,9 @@ body {
 	border: 1px solid black;
 	width: 275px;
 	border-radius: 10px;
+  font-size: 1.2em;
+  background-color: #F5F5F5;
+  padding-left: 10px;
 }
 
 #startMessage:hover {
@@ -62,6 +65,7 @@ body {
 	color: white;
 	border-radius: 10px;
 	margin-top: 5px;
+  font-size: 1.2em;
 }
 
 .divBlock {
@@ -81,11 +85,12 @@ body {
 	border: 0px solid white;
 	margin-left: -1px;
 	margin-top: -1px;
+  font-size:1.1em;
 }
 
 .score {
-	float: right;
-	margin-right: 10px;
+  float: right;
+  padding-right: 20px;
 }
 
 .center {

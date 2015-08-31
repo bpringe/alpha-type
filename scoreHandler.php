@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $hostname = "fdb6.awardspace.net";
 $username = "1936059_at";
 $password = "H@zelAlvis2";
@@ -38,7 +40,13 @@ if ((isset($_POST["score"])) and !(isset($_POST["playerName"]))) {
 			$isHighScore = "true";
 		}
 	}
-	echo $isHighScore;
+  /* If it is a high score, add a token to the modal to prevent
+    anti-forgery */
+  $token = md5(uniqid());
+  $_SESSION["token"] = $token;
+  $responseArray = array("isHighScore" => $isHighScore, 
+                         "token" => $token);
+	echo json_encode($responseArray);
 	$conn->close();
 	exit();
 }
@@ -46,6 +54,13 @@ if ((isset($_POST["score"])) and !(isset($_POST["playerName"]))) {
 // If score and playerName are both set, add new high score to db
 // To-do: Add security here to protect against SQL injects
 if ((isset($_POST["score"])) and (isset($_POST["playerName"]))) {
+  echo "\nSession token = ".$_SESSION["token"]."\nPOST token = ".$_POST["token"]."\n";
+  // Protect against cross site request forgery - CSRF
+  if ($_POST["token"] != $_SESSION["token"]) {
+    echo "SESSION and POST tokens not equal\n";
+    $conn->close();
+    exit();
+  }
   // Find lowest score and delete record in db
   $min = 999999999;
   foreach ($rows as $score) {
@@ -68,7 +83,7 @@ if ((isset($_POST["score"])) and (isset($_POST["playerName"]))) {
     $body = "Name: " . $_POST["playerName"] . "\nScore: " . $_POST["score"];
     $headers = "MIME-Version: 1.0";
     $headers.= "Content-type:text/html;charset=UTF-8";
-    $headers.= "From: Brandon <admin@alphatype.dx.am>";
+    $headers.= "From: Brandon <admin@alphatype.mygamesonline.org>";
     
     if(mail($to,$subject,$body,$headers)) echo "MAIL - OK";
     else echo "\nMAIL FAILED";

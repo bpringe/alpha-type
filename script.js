@@ -1,7 +1,7 @@
 var CANVAS_WIDTH = 850;
 var CANVAS_HEIGHT = 400;
-var CANVAS_TOP_OFFSET = 150;
-var CANVAS_LEFT_OFFSET = 50;
+var CANVAS_TOP_OFFSET = 175;
+var CANVAS_LEFT_OFFSET = 20;
 var updates = 0;
 var divArray = [];
 var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -13,7 +13,7 @@ var updateInterval;
 var drawScreenInterval;
 var gameRunning = false;
 
-// Javascript "OOP" implementationzz
+// Javascript "OOP" implementation
 var Div = function() {
 	this.width = 30;
 	this.height = 35;
@@ -53,25 +53,32 @@ function drawScreen() {
 	drawGameOverProg();
 }
 
+function gameOverAnimations() {
+  $("#canvas").append("<div id='gameOverMessage' style='display: none'>Game Over</div>");
+	$("#canvas").animate({backgroundColor: "black"}, 1000);
+	$("#gameOverMessage").delay(1000).fadeIn(2000);
+	$("#startMessage").delay(2000).fadeIn(2000);
+}
+
 function gameOver() {
 	gameRunning = false;
 	clearInterval(updateInterval);
 	clearInterval(drawScreenInterval);
-	// Clear the array so that keyup events don't increment the score
+	// Clear the array so that keyup events dont increment the score
 	divArray = [];
-	$("#canvas").append("<div id='gameOverMessage' style='display: none'>Game Over</div>");
-	$("#canvas").animate({backgroundColor: "black"}, 1000);
-	$("#gameOverMessage").delay(1000).fadeIn(2000);
-	$("#startMessage").delay(2000).fadeIn(2000);
+	gameOverAnimations();
 	
 	/* Call handler to get current high scores and check if current score
 		is greater than any score in the result. If so, post score to handler and
 		use result from post to populate High Scores list.
 			-- Add delay to allow Game Over animation to complete before modal appears 
 	*/
-	$.post("scoreHandler.php", {score: score}, function(isHighScore, status){
-		if (isHighScore === "true") {
+	$.post("scoreHandler.php", {score: score}, function(response, status){
+    var json = JSON.parse(response);
+    //console.log(json.isHighScore + "\n" + json.token);
+		if (json.isHighScore === "true") {
 			$("#highScoreModal").modal("show");
+      $("#highScoreModal").append('<input type="hidden" id="token" value="' + json.token + '" />');
 		}
   });
 }
@@ -122,7 +129,8 @@ function initGame() {
 		CANVAS_TOP_OFFSET - $("#score").height() - 40 + "px"});
 	
 	// Show start message
-	$("#startMessage").css({"left": CANVAS_LEFT_OFFSET + $("#score").width() + 50 + "px",
+	$("#startMessage").css({"left": CANVAS_WIDTH + 
+    - $("#startMessage").width() + "px",
 		"top": CANVAS_TOP_OFFSET - $("#score").height() - 40 + "px", 
 		"background-color": "#32BA36"});
 		
@@ -151,6 +159,16 @@ function startGame() {
 	drawScreenInterval = setInterval(drawScreen, (1000/60));
 }
 
+function getHighScores() {
+  $.get("scoreHandler.php", function(jsonData) {
+    $("#highScores").empty();
+		$.each(jsonData, function(index, highScore) {
+			$("#highScores").append("<li>" + highScore.name + "<span class='score'>" + 
+				highScore.score + "</span></li>");
+		});
+	});
+}
+
 // Load the game once the document is finished loading
 $(document).ready(function() {
 	initGame();
@@ -176,7 +194,7 @@ $(document).ready(function() {
 			if (event.keyCode === divArray[i].content.charCodeAt(0)) {
 				divArray.splice(i, 1);
 				score++;
-				if (score % 10 === 0) {
+				if (score % 8 === 0) {
 					divSpawnRate -= 2; // decrease number of updates between spawns
 				}
 				/* break to prevent deletion of more than one element of array
@@ -185,31 +203,17 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
-	// Get high scores from scoreHandler.php as JSON
-	$.get("scoreHandler.php", function(jsonData) {
-		$.each(jsonData, function(index, highScore) {
-			$("#highScores").append("<li>" + highScore.name + "<span class='score'>" + 
-				highScore.score + "</span></li>");
-		});
-	});
+  
+  getHighScores();
 	
 	/* Post player name and score to db when player clicks save button in modal,
 	  which is only made visible when game is over and score is in the top ten */
 	$("#saveButton").click(function() {
     $("#highScoreModal").modal("hide");
-		$.post("scoreHandler.php", {score: score, playerName: $("#playerName").val()}, 
+		$.post("scoreHandler.php", {score: score, playerName: $("#playerName").val(), token: $("#token").val()}, 
 			function(response) {
-				console.log(response);
+				//console.log(response);
+        getHighScores();
 			}); // end $.post
-    
-		// Draw the high scores table again
-    $("#highScores").empty();
-	  $.get("scoreHandler.php", function(jsonData) {
-		  $.each(jsonData, function(index, highScore) {
-				$("#highScores").append("<li>" + highScore.name + "<span class='score'>" + 
-					highScore.score + "</span></li>");
-			}); // end $.each
-		}); // end $.get
 	}); // end $("#saveButton").click
 });
