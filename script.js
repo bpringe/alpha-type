@@ -1,6 +1,6 @@
 var CANVAS_WIDTH = 850;
 var CANVAS_HEIGHT = 400;
-var CANVAS_TOP_OFFSET = 175;
+var CANVAS_TOP_OFFSET = 200;
 var CANVAS_LEFT_OFFSET = 20;
 var updates = 0;
 var divArray = [];

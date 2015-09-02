@@ -43,6 +43,12 @@ body {
 	top: 20px;
 }
 
+#instructions {
+  margin-top: 10px;
+  font-size: 16px; 
+  text-align: center;
+}
+
 #highScoresDiv {
 	position: absolute;
 	border: 1px solid black;
