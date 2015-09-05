@@ -3,7 +3,7 @@ session_start();
 
 $hostname = "fdb6.awardspace.net";
 $username = "1936059_at";
-$password = "H@zelAlvis2";
+$password = "";
 $dbname = "1936059_at";
 // Create connection
 $conn = new mysqli($hostname, $username, $password, $dbname);
